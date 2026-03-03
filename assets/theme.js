@@ -747,12 +747,23 @@ Carousel
 class ThemeCarousel extends HTMLElement {
   constructor() {
     super();
-    this.mobileQuery = window.matchMedia('(max-width: 599px)');
-    this.tabletQuery = window.matchMedia('(min-width: 600px) and (max-width: 1199px)');
-    this.desktopQuery = window.matchMedia('(min-width: 1200px)');
+    this.reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    this.focusableUpdateFrame = null;
+    this.touchStartX = null;
     this.boundHandlers = {
       prev: () => this.prevSlide(),
-      next: () => this.nextSlide()
+      next: () => this.nextSlide(),
+      resize: () => {
+        this.positionButtons();
+        this.updateFocusableItemsInView();
+      },
+      trackScroll: () => {
+        this.updateFocusableItemsInView();
+        this.updateProgress();
+      },
+      trackKeydown: (event) => this.onTrackKeydown(event),
+      trackTouchStart: (event) => this.handleFirstLastScrollItems(event, 'start'),
+      trackTouchEnd: (event) => this.handleFirstLastScrollItems(event, 'end')
     };
   }
 
@@ -767,13 +778,31 @@ class ThemeCarousel extends HTMLElement {
     if (this.nextBtn) {
       this.nextBtn.removeEventListener('click', this.boundHandlers.next);
     }
+    if (this.track) {
+      this.track.removeEventListener('keydown', this.boundHandlers.trackKeydown);
+      this.track.removeEventListener('scroll', this.boundHandlers.trackScroll);
+      this.track.removeEventListener('touchstart', this.boundHandlers.trackTouchStart);
+      this.track.removeEventListener('touchend', this.boundHandlers.trackTouchEnd);
+    }
+    window.removeEventListener('resize', this.boundHandlers.resize);
+    if (this.focusableUpdateFrame) {
+      window.cancelAnimationFrame(this.focusableUpdateFrame);
+      this.focusableUpdateFrame = null;
+    }
   }
 
   initCarousel() {
     this.track = this.querySelector('.theme-carousel-track');
+    if (!this.track) {
+      return;
+    }
+
     this.items = this.track ? this.track.querySelectorAll('.theme-carousel-item') : this.querySelectorAll('.theme-carousel-item');
     this.prevBtn = this.querySelector('[data-prev]');
     this.nextBtn = this.querySelector('[data-next]');
+    this.progressBar = this.querySelector('.theme-carousel-progress-bar');
+
+    this.setupAccessibility();
 
     if (this.prevBtn) {
       this.prevBtn.addEventListener('click', this.boundHandlers.prev);
@@ -783,7 +812,119 @@ class ThemeCarousel extends HTMLElement {
     }
 
     this.positionButtons();
-    window.addEventListener('resize', () => this.positionButtons());
+    this.updateProgress();
+    window.addEventListener('resize', this.boundHandlers.resize);
+  }
+
+  setupAccessibility() {
+    this.track.addEventListener('keydown', this.boundHandlers.trackKeydown);
+    this.track.addEventListener('scroll', this.boundHandlers.trackScroll, { passive: true });
+    this.track.addEventListener('touchstart', this.boundHandlers.trackTouchStart, { passive: true });
+    this.track.addEventListener('touchend', this.boundHandlers.trackTouchEnd, { passive: true });
+    this.updateFocusableItemsInView();
+  }
+
+  handleFirstLastScrollItems(event, phase) {
+    const swipeThreshold = 24;
+    const touchStart = event.touches && event.touches[0];
+    const touchEnd = event.changedTouches && event.changedTouches[0];
+
+    if (phase === 'start') {
+      if (!touchStart) {
+        return;
+      }
+
+      this.touchStartX = touchStart.clientX;
+      return;
+    }
+
+    if (this.touchStartX === null || !touchEnd) {
+      this.touchStartX = null;
+      return;
+    }
+
+    const deltaX = this.touchStartX - touchEnd.clientX;
+    const swipedLeft = deltaX > swipeThreshold;
+    const swipedRight = deltaX < -swipeThreshold;
+    const { firstVisibleIndex, lastVisibleIndex } = this.getVisibleItemRange();
+
+    if (swipedLeft && lastVisibleIndex === this.items.length - 1) {
+      this.track.scrollTo({ left: 0, behavior: 'auto' });
+    }
+
+    if (swipedRight && firstVisibleIndex === 0) {
+      this.track.scrollTo({ left: this.getMaxScroll(), behavior: 'auto' });
+    }
+
+    this.touchStartX = null;
+  }
+
+  getVisibleItemRange() {
+    const trackRect = this.track.getBoundingClientRect();
+    let firstVisibleIndex = -1;
+    let lastVisibleIndex = -1;
+
+    this.items.forEach((item, index) => {
+      const itemRect = item.getBoundingClientRect();
+      const visibleWidth = Math.min(itemRect.right, trackRect.right) - Math.max(itemRect.left, trackRect.left);
+      const isInView = visibleWidth > 0 && itemRect.width > 0 && visibleWidth / itemRect.width >= 0.5;
+
+      if (isInView) {
+        if (firstVisibleIndex === -1) {
+          firstVisibleIndex = index;
+        }
+        lastVisibleIndex = index;
+      }
+    });
+
+    return { firstVisibleIndex, lastVisibleIndex };
+  }
+
+  updateProgress() {
+    if (!this.track || !this.progressBar || !this.items.length) {
+      return;
+    }
+
+    const { firstVisibleIndex, lastVisibleIndex } = this.getVisibleItemRange();
+
+    if (firstVisibleIndex === -1) {
+      return;
+    }
+
+    const visibleCount = lastVisibleIndex - firstVisibleIndex + 1;
+    const progressWidth = (visibleCount / this.items.length) * 100;
+    const progressLeft = (firstVisibleIndex / this.items.length) * 100;
+
+    this.progressBar.style.width = `${progressWidth}%`;
+    this.progressBar.style.left = `${progressLeft}%`;
+  }
+
+  updateFocusableItemsInView() {
+    if (!this.track || !this.items.length || this.focusableUpdateFrame) {
+      return;
+    }
+
+    this.focusableUpdateFrame = window.requestAnimationFrame(() => {
+      this.focusableUpdateFrame = null;
+      const trackRect = this.track.getBoundingClientRect();
+
+      this.items.forEach((item) => {
+        const itemRect = item.getBoundingClientRect();
+        const visibleWidth = Math.min(itemRect.right, trackRect.right) - Math.max(itemRect.left, trackRect.left);
+        const isInView = visibleWidth > 0 && itemRect.width > 0 && visibleWidth / itemRect.width >= 0.6;
+        const focusables = item.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]'
+        );
+
+        focusables.forEach((element) => {
+          if (isInView) {
+            element.removeAttribute('tabindex');
+          } else {
+            element.setAttribute('tabindex', '-1');
+          }
+        });
+      });
+    });
   }
 
   positionButtons() {
@@ -828,6 +969,10 @@ class ThemeCarousel extends HTMLElement {
     return this.track.scrollWidth - this.track.clientWidth;
   }
 
+  getScrollBehavior() {
+    return this.reduceMotionQuery.matches ? 'auto' : 'smooth';
+  }
+
   isAtStart() {
     return this.track.scrollLeft <= 10;
   }
@@ -836,15 +981,41 @@ class ThemeCarousel extends HTMLElement {
     return this.track.scrollLeft >= this.getMaxScroll() - 10;
   }
 
+  onTrackKeydown(event) {
+    if (!this.track || !this.items.length) {
+      return;
+    }
+
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      this.nextSlide();
+    }
+
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      this.prevSlide();
+    }
+
+    if (event.key === 'Home') {
+      event.preventDefault();
+      this.track.scrollTo({ left: 0, behavior: this.getScrollBehavior() });
+    }
+
+    if (event.key === 'End') {
+      event.preventDefault();
+      this.track.scrollTo({ left: this.getMaxScroll(), behavior: this.getScrollBehavior() });
+    }
+  }
+
   nextSlide() {
     if (!this.track || !this.items.length) {
       return;
     }
 
     if (this.isAtEnd()) {
-      this.track.scrollTo({ left: 0, behavior: 'smooth' });
+      this.track.scrollTo({ left: 0, behavior: this.getScrollBehavior() });
     } else {
-      this.track.scrollBy({ left: this.getScrollAmount(), behavior: 'smooth' });
+      this.track.scrollBy({ left: this.getScrollAmount(), behavior: this.getScrollBehavior() });
     }
   }
 
@@ -854,9 +1025,9 @@ class ThemeCarousel extends HTMLElement {
     }
 
     if (this.isAtStart()) {
-      this.track.scrollTo({ left: this.getMaxScroll(), behavior: 'smooth' });
+      this.track.scrollTo({ left: this.getMaxScroll(), behavior: this.getScrollBehavior() });
     } else {
-      this.track.scrollBy({ left: -this.getScrollAmount(), behavior: 'smooth' });
+      this.track.scrollBy({ left: -this.getScrollAmount(), behavior: this.getScrollBehavior() });
     }
   }
 }

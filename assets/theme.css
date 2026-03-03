@@ -1072,6 +1072,7 @@ shopify-accelerated-checkout {
   --cols: var(--mobile-cols);
   display: block;
   position: relative;
+
 }
 
 .theme-carousel-track {
@@ -1082,11 +1083,16 @@ shopify-accelerated-checkout {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
+  scroll-behavior: smooth
 }
 
 .theme-carousel-track::-webkit-scrollbar {
   display: none;
+}
+
+.theme-carousel-track:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
 }
 
 .theme-carousel-item {
@@ -1124,6 +1130,37 @@ shopify-accelerated-checkout {
 
 .theme-carousel-controls button[data-next] {
   right: 0;
+}
+
+.theme-carousel-progress {
+  position: relative;
+  height: 2px;
+  background: rgb(var(--color-foreground) / 0.1);
+  border-radius: 50rem;
+  margin: 2rem auto 0;
+  width: min(100%, 400px, 70vw);
+}
+
+.theme-carousel-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: rgb(var(--color-foreground));
+  width: 0%;
+  border-radius: 50rem;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+@media (max-width: 599px) {
+  .theme-carousel-track {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    scroll-padding-left: 1rem;
+    scroll-padding-right: 1rem;
+  }
 }
 
 @media (min-width: 600px) and (max-width: 1199px) {

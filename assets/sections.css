@@ -375,6 +375,65 @@ html[data-cart-item-count="0"] #header .count-badge[data-cart-badge] {
 
 
 /*
+  Media with text
+*/
+.media-with-text {
+}
+
+.media-with-text-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.media-with-text-media {
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+}
+
+.media-with-text-media img,
+.media-with-text-media video,
+.media-with-text-media iframe {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.media-with-text-media iframe {
+  aspect-ratio: 16 / 9;
+}
+
+.media-with-text-content {
+  text-align: var(--text-align-mobile);
+}
+
+@media (min-width: 1200px) {
+  .media-with-text-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .media-with-text-inner[data-media-alignment-desktop='left'] .media-with-text-media {
+    order: 1;
+  }
+  .media-with-text-inner[data-media-alignment-desktop='left'] .media-with-text-content {
+    order: 2;
+  }
+  .media-with-text-inner[data-media-alignment-desktop='right'] .media-with-text-media {
+    order: 2;
+  }
+  .media-with-text-inner[data-media-alignment-desktop='right'] .media-with-text-content {
+    order: 1;
+  }
+  .media-with-text-content {
+    text-align: var(--text-align-desktop);
+  }
+}
+
+
+/*
   Contact form
 */
 .contact-form {
