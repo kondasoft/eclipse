@@ -175,10 +175,31 @@
         "judge_me_reviews_review_widget_ptXDLC"
       ],
       "settings": {}
+    },
+    "recommended_products_R8NFBC": {
+      "type": "recommended-products",
+      "name": "Recommended Products",
+      "settings": {
+        "limit": 8,
+        "custom_color_schemes": false,
+        "light_color_scheme": "",
+        "dark_color_scheme": "",
+        "style": "carousel",
+        "header_align": "center",
+        "heading": "You might also like",
+        "heading_size": "h2",
+        "description": "<p>Explore products we think you'll love based on your viewing history.<\/p>",
+        "description_size": "fs-md",
+        "mobile_cols": 2,
+        "desktop_cols": 4,
+        "pt": 25,
+        "pb": 25
+      }
     }
   },
   "order": [
     "product_gpN69x",
-    "17714241464beadc8c"
+    "17714241464beadc8c",
+    "recommended_products_R8NFBC"
   ]
 }

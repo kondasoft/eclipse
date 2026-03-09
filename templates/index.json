@@ -57,33 +57,6 @@
         "pb": 25
       }
     },
-    "latest_articles_Jx9kP2": {
-      "type": "latest-articles",
-      "name": "Latest Articles",
-      "settings": {
-        "blog": "news",
-        "limit": 3,
-        "custom_color_schemes": false,
-        "light_color_scheme": "",
-        "dark_color_scheme": "",
-        "header_align": "center",
-        "heading": "Latest Articles",
-        "heading_size": "h2",
-        "description": "<p>Catch up on recent stories, updates, and announcements.<\/p>",
-        "description_size": "fs-md",
-        "mobile_cols": 1,
-        "desktop_cols": 3,
-        "card_text_alignment": "left",
-        "card_heading_size": "fs-lg",
-        "card_img_ratio": "ratio-16x9",
-        "show_image": true,
-        "show_date": true,
-        "show_author": false,
-        "show_excerpt": true,
-        "pt": 25,
-        "pb": 25
-      }
-    },
     "collections_list_neHdek": {
       "type": "collections-list",
       "blocks": {
@@ -136,12 +109,13 @@
       "settings": {
         "display": "selected",
         "limit": 40,
+        "style": "grid",
         "custom_color_schemes": true,
         "light_color_scheme": "scheme-2",
         "dark_color_scheme": "scheme-4",
         "text_align": "center",
         "show_breadcrumb": false,
-        "title": "Collections",
+        "heading": "Collections",
         "heading_size": "h2",
         "description": "<p>Explore our curated selection of collections featuring unique products and styles tailored to your preferences.<\/p>",
         "description_size": "fs-md",
@@ -249,22 +223,13 @@
         "pb": 25
       }
     },
-    "separator_mgmCDL": {
-      "type": "separator",
-      "name": "Separator",
-      "settings": {
-        "wrap_container": true,
-        "pt": 0,
-        "pb": 0
-      }
-    },
     "basic_media_QjjY66": {
       "type": "basic-media",
       "name": "Basic media",
       "settings": {
-        "custom_color_schemes": false,
-        "light_color_scheme": "",
-        "dark_color_scheme": "",
+        "custom_color_schemes": true,
+        "light_color_scheme": "scheme-2",
+        "dark_color_scheme": "scheme-4",
         "container_width": "theme",
         "custom_container_width": 1200,
         "header_align": "center",
@@ -284,7 +249,35 @@
         "pb": 25
       }
     },
-    "separator_HmjUHF": {
+    "latest_articles_hnDQGf": {
+      "type": "latest-articles",
+      "name": "Latest Articles",
+      "settings": {
+        "blog": "news",
+        "limit": 8,
+        "custom_color_schemes": false,
+        "light_color_scheme": "",
+        "dark_color_scheme": "",
+        "style": "carousel",
+        "header_align": "center",
+        "heading": "Latest Articles",
+        "heading_size": "h2",
+        "description": "<p>Highlight recent posts from your blog.<\/p>",
+        "description_size": "fs-md",
+        "mobile_cols": 1,
+        "desktop_cols": 3,
+        "card_text_alignment": "left",
+        "card_img_ratio": "ratio-16x9",
+        "card_heading_size": "fs-lg",
+        "card_show_date": true,
+        "card_show_author": true,
+        "card_show_excerpt": true,
+        "card_show_tags": true,
+        "pt": 25,
+        "pb": 25
+      }
+    },
+    "separator_WkcBq6": {
       "type": "separator",
       "name": "Separator",
       "settings": {
@@ -399,16 +392,15 @@
   "order": [
     "hero_media_M4Xdyq",
     "featured_collection_GTzdhN",
-    "latest_articles_Jx9kP2",
     "collections_list_neHdek",
     "richtext_FUFaAX",
     "separator_1",
     "media_with_text_w9AxEE",
     "separator_UJwDht",
     "html_9n2q8X",
-    "separator_mgmCDL",
     "basic_media_QjjY66",
-    "separator_HmjUHF",
+    "latest_articles_hnDQGf",
+    "separator_WkcBq6",
     "multicolumn_tAY9aH"
   ]
 }

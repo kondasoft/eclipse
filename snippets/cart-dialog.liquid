@@ -169,7 +169,7 @@
                       {% if line_item.original_line_price > line_item.final_line_price %}
                         <s class="price-compare">
                           <span class="visually-hidden"> {{ 'product.price.regular' | t }} &nbsp; </span>
-                          <span>{{ line_item.original_line_price | money }}</span>
+                          <span>{{ line_item.original_line_price | times: line_item.quantity | money }}</span>
                         </s>
                         <span class="price-sale">
                           <span class="visually-hidden"> {{ 'product.price.sale' | t }} &nbsp; </span>
@@ -178,7 +178,7 @@
                       {% elsif line_item.variant.compare_at_price > line_item.variant.price %}
                         <s class="price-compare">
                           <span class="visually-hidden"> {{ 'product.price.regular' | t }} &nbsp; </span>
-                          <span>{{ line_item.variant.compare_at_price | money }}</span>
+                          <span>{{ line_item.variant.compare_at_price | times: line_item.quantity | money }}</span>
                         </s>
                         <span class="price-sale">
                           <span class="visually-hidden"> {{ 'product.price.sale' | t }} &nbsp; </span>

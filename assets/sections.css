@@ -352,6 +352,13 @@ html[data-cart-item-count="0"] #header .count-badge[data-cart-badge] {
 
 
 /*
+  Recommended products
+*/
+.recommended-products {
+}
+
+
+/*
   Latest articles
 */
 .latest-articles {

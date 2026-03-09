@@ -492,7 +492,8 @@ class CartNote extends HTMLElement {
     this.boundHandlers = {
       submit: (e) => this.handleSubmit(e),
       input: () => !this.isSaving && this.setButtonState(this.submitButton?.dataset.textBtnSave || 'Save', false),
-      cartUpdated: (e) => this.handleCartUpdated(e)
+      cartUpdated: (e) => this.handleCartUpdated(e),
+      detailsToggle: (e) => this.handleDetailsToggle(e)
     };
   }
 
@@ -500,17 +501,26 @@ class CartNote extends HTMLElement {
     this.form = this.querySelector('form');
     this.input = this.querySelector('textarea[name="note"]');
     this.submitButton = this.querySelector('button[type="submit"]');
+    this.detailsElement = this.closest('details');
 
     this.form?.addEventListener('submit', this.boundHandlers.submit);
     this.input?.addEventListener('input', this.boundHandlers.input);
     document.addEventListener('cart:updated', this.boundHandlers.cartUpdated);
+    this.detailsElement?.addEventListener('toggle', this.boundHandlers.detailsToggle);
   }
 
   disconnectedCallback() {
     this.form?.removeEventListener('submit', this.boundHandlers.submit);
     this.input?.removeEventListener('input', this.boundHandlers.input);
     document.removeEventListener('cart:updated', this.boundHandlers.cartUpdated);
+    this.detailsElement?.removeEventListener('toggle', this.boundHandlers.detailsToggle);
     this.clearSavedTimeout();
+  }
+
+  handleDetailsToggle(event) {
+    if (event.target.open) {
+      this.input?.focus({ preventScroll: true });
+    }
   }
 
   async handleSubmit(event) {

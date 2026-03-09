@@ -2,13 +2,21 @@
   "sections": {
     "article_main_x9Y7z8": {
       "type": "article",
-      "blocks": { 
+      "blocks": {
+        "image_TWdGyw": {
+          "type": "image",
+          "settings": {
+            "img_ratio": "ratio-16x9",
+            "pt": 0,
+            "pb": 12
+          }
+        },
         "title_a1B2c3": {
           "type": "title",
           "settings": {
             "heading_size": "h1",
-            "pt": 0, 
-            "pb": 3
+            "pt": 0,
+            "pb": 2
           }
         },
         "meta_d4E5f6": {
@@ -16,51 +24,56 @@
           "settings": {
             "show_date": true,
             "show_author": true,
-            "show_tags": true,
+            "text_size": "fs-md",
             "pt": 0,
-            "pb": 8
-          }
-        },
-        "featured_image_g7H8i9": {
-          "type": "featured_image",
-          "settings": {
-            "img_ratio": "natural",
-            "pt": 0,
-            "pb": 8
+            "pb": 10
           }
         },
         "content_j1K2l3": {
           "type": "content",
           "settings": {
-            "content_size": "fs-md",
+            "text_size": "fs-md",
             "pt": 0,
-            "pb": 8
+            "pb": 21
+          }
+        },
+        "tags_FAdWkw": {
+          "type": "tags",
+          "settings": {
+            "pt": 0,
+            "pb": 14
           }
         },
         "share_m4N5o6": {
           "type": "share",
           "settings": {
-            "show_facebook": true,
-            "show_twitter": true,
-            "show_pinterest": false,
-            "show_linkedin": false,
             "pt": 0,
-            "pb": 0
+            "pb": 10
+          }
+        },
+        "navigation_dAngLt": {
+          "type": "navigation",
+          "settings": {
+            "pt": 0,
+            "pb": 9
           }
         }
       },
       "block_order": [
+        "image_TWdGyw",
         "title_a1B2c3",
         "meta_d4E5f6",
-        "featured_image_g7H8i9",
         "content_j1K2l3",
-        "share_m4N5o6"
+        "tags_FAdWkw",
+        "share_m4N5o6",
+        "navigation_dAngLt"
       ],
       "settings": {
         "custom_color_schemes": false,
         "light_color_scheme": "scheme-1",
         "dark_color_scheme": "scheme-3",
-        "pt": 25,
+        "max_width": 720,
+        "pt": 10,
         "pb": 25
       }
     }
