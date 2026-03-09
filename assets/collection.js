@@ -133,7 +133,7 @@ class CollectionFiltersForm extends HTMLElement {
   }
 
   async fetchFilteredResults(urlString) {
-    const currentProductGrid = document.querySelector('.product-grid');
+    const currentProductGrid = document.querySelector('.theme-grid');
 
     // Add loading state
     if (currentProductGrid) {
@@ -161,12 +161,12 @@ class CollectionFiltersForm extends HTMLElement {
       }
 
       // Update the product grid
-      const newProductGrid = doc.querySelector('.product-grid');
+      const newProductGrid = doc.querySelector('.theme-grid');
       if (newProductGrid && currentProductGrid) {
         currentProductGrid.outerHTML = newProductGrid.outerHTML;
       }
 
-      const updatedProductGrid = document.querySelector('.product-grid');
+      const updatedProductGrid = document.querySelector('.theme-grid');
       if (updatedProductGrid) {
         updatedProductGrid.style.opacity = '1';
       }

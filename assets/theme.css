@@ -1208,11 +1208,11 @@ shopify-accelerated-checkout {
 }
 
 .theme-carousel-controls button[data-prev] {
-  left: 0;
+  left: -.5rem;
 }
 
 .theme-carousel-controls button[data-next] {
-  right: 0;
+  right: -.5rem;
 }
 
 .theme-carousel-progress {
@@ -1244,6 +1244,9 @@ shopify-accelerated-checkout {
     scroll-padding-left: 1rem;
     scroll-padding-right: 1rem;
   }
+  .theme-carousel-controls button {
+    display: none;
+  }
 }
 
 @media (min-width: 600px) and (max-width: 1199px) {
@@ -1258,28 +1261,41 @@ shopify-accelerated-checkout {
   }
 }
 
+@media (min-width: 1600px) {
+  .theme-carousel-controls button[data-prev] {
+    left: -1rem;
+  }
+
+  .theme-carousel-controls button[data-next] {
+    right: -1rem;
+  }
+}
+
 
 /*
-  Product grid
+  Theme grid
 */
-.product-grid {
+.theme-grid {
+  --cols: var(--mobile-cols);
+  --row-gap: 2rem;
+  --col-gap: 1rem;
   display: grid;
-  gap: 2rem 1rem;
-  grid-template-columns: repeat(var(--mobile-cols, 1), 1fr);
+  gap: var(--row-gap) var(--col-gap);
+  grid-template-columns: repeat(var(--cols, 1), 1fr);
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
 @media (min-width: 600px) and (max-width: 1199px) {
-  .product-grid {
-    grid-template-columns: repeat(var(--tablet-cols, 3), 1fr);
+  .theme-grid {
+    --cols: var(--tablet-cols);
   }
 }
 
 @media (min-width: 1200px) {
-  .product-grid {
-    grid-template-columns: repeat(var(--desktop-cols, 4), 1fr);
+  .theme-grid {
+    --cols: var(--desktop-cols);
   }
 }
 

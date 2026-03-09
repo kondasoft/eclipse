@@ -37,14 +37,14 @@
     {% else %}
       {% paginate blog.articles by limit %}
         <ul
-          class="blog-grid"
+          class="theme-grid"
           style="
             --mobile-cols: {{ section.settings.mobile_cols }};
             --desktop-cols: {{ section.settings.desktop_cols }};
           "
         >
           {% for article in blog.articles %}
-            <li class="blog-item">
+            <li class="theme-grid-item">
               {% render 'article-card', article: article %}
             </li>
           {% endfor %}

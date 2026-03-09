@@ -27,25 +27,86 @@
         {% endif %}
       </header>
     {% endif %}
-    <ul
-      class="blog-grid"
-      style="
-        --mobile-cols: {{ section.settings.mobile_cols }};
-        --desktop-cols: {{ section.settings.desktop_cols }};
-      "
-    >
-      {% for article in section.settings.blog.articles limit: section.settings.limit %}
-        <li class="blog-item">
-          {% render 'article-card', article: article %}
-        </li>
-      {% else %}
-        {% for index in (1..8) %}
+    {% if section.settings.style == 'grid' %}
+      <ul
+        class="theme-grid"
+        style="
+          --mobile-cols: {{ section.settings.mobile_cols }};
+          --desktop-cols: {{ section.settings.desktop_cols }};
+        "
+        data-style="{{ section.settings.style }}"
+      >
+        {% for article in section.settings.blog.articles limit: section.settings.limit %}
           <li class="blog-item">
-            {% render 'article-card-placeholder', index: index %} 
+            {% render 'article-card', article: article %}
           </li>
+        {% else %}
+          {% for index in (1..8) %}
+            <li class="blog-item">
+              {% render 'article-card', index: index %} 
+            </li>
+          {% endfor %}
         {% endfor %}
-      {% endfor %}
-    </ul>
+      </ul>
+    {% else %}
+      <theme-carousel
+        class="theme-carousel"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="{{ section.settings.heading | default: 'Latest articles' | escape }}"
+        style="
+          --mobile-cols: {{ section.settings.mobile_cols }};
+          --desktop-cols: {{ section.settings.desktop_cols }};
+          --gap: 1rem;
+        "
+      >
+        <div
+          id="theme-carousel-track-{{ section.id }}"
+          class="theme-carousel-track"
+          role="group"
+          aria-roledescription="slides"
+          tabindex="0"
+        >
+          {% for article in section.settings.blog.articles limit: section.settings.limit %}
+            <div
+              class="theme-carousel-item"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="{{ forloop.index }} of {{ forloop.length }}"
+            >
+              {% render 'article-card', article: article %}
+            </div>
+          {% else %}
+            {% for index in (1..8) %}
+              <div
+                class="theme-carousel-item"
+                role="group"
+                aria-roledescription="slide"
+                aria-label="{{ forloop.index }} of {{ forloop.length }}"
+              >
+                {% render 'article-card', index: index %}
+              </div>
+            {% endfor %}
+          {% endfor %}
+        </div>
+        <div 
+          class="theme-carousel-controls">
+          <button type="button" data-prev aria-controls="theme-carousel-track-{{ section.id }}" aria-label="{{ 'accessibility.previous' | t }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button type="button" data-next aria-controls="theme-carousel-track-{{ section.id }}" aria-label="{{ 'accessibility.next' | t }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+        <div class="theme-carousel-progress">
+          <div class="theme-carousel-progress-bar"></div>
+        </div>
+      </theme-carousel>
+    {% endif %}
   </div>
 </div>
 
@@ -91,6 +152,16 @@
       "label": "Dark color scheme",
       "default": "scheme-3",
       "visible_if": "{{ section.settings.custom_color_schemes == true }}"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Display style",
+      "options": [
+        { "value": "carousel", "label": "Carousel" },
+        { "value": "grid", "label": "Grid" }
+      ],
+      "default": "carousel"
     },
     {
       "type": "header",

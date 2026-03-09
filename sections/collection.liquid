@@ -27,7 +27,7 @@
 >
   <div class="container">
     <div class="collection-bar">
-      <div class="collecion-bar-left">
+      <div class="collection-bar-left">
         {% if section.settings.show_product_count %}
           <p class="collection-bar-count">
             {{ 'collection.count_products' | t: count: collection.products_count }}
@@ -75,7 +75,7 @@
     
       {% paginate collection.products by limit %}
         <ul
-          class="product-grid"
+          class="theme-grid"
           style="
             --mobile-cols: {{ section.settings.mobile_cols }};
             --desktop-cols: {{ section.settings.desktop_cols }};
@@ -86,7 +86,7 @@
           {% endif %}
         >
           {% for product in collection.products %}
-            <li class="collection-item">
+            <li class="theme-grid-item">
               {% render 'product-card', product: product %}
             </li>
           {% endfor %}

@@ -44,7 +44,7 @@
     {% if section.settings.display == 'all' %}
       {% paginate collections by limit %}
         <ul
-          class="collection-grid" 
+          class="theme-grid" 
           style="
             --mobile-cols: {{ section.settings.mobile_cols }};
             --desktop-cols: {{ section.settings.desktop_cols }};
@@ -59,19 +59,69 @@
       {% render 'pagination', paginate: paginate %}
       {% endpaginate %}
     {% else %}
-      <ul
-        class="collection-grid"
-        style="
-          --mobile-cols: {{ section.settings.mobile_cols }};
-          --desktop-cols: {{ section.settings.desktop_cols }};
-        "
-      >
-        {% for block in section.blocks %}
-          <li class="collection-item">
-            {% render 'collection-card', collection: block.settings.collection, index: forloop.index %}
-          </li> 
-        {% endfor %}
-      </ul>
+      {% if section.settings.style == 'grid' %}
+        <ul
+          class="theme-grid"
+          style="
+            --mobile-cols: {{ section.settings.mobile_cols }};
+            --desktop-cols: {{ section.settings.desktop_cols }};
+          "
+          data-style="{{ section.settings.style }}"
+        >
+          {% for block in section.blocks %}
+            <li class="collection-item">
+              {% render 'collection-card', collection: block.settings.collection, index: forloop.index %}
+            </li> 
+          {% endfor %}
+        </ul>
+      {% else %}
+        <theme-carousel
+          class="theme-carousel"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="{{ section.settings.heading | default: 'Collections' | escape }}"
+          style="
+            --mobile-cols: {{ section.settings.mobile_cols }};
+            --desktop-cols: {{ section.settings.desktop_cols }};
+            --gap: 1rem;
+          "
+        >
+          <div
+            id="theme-carousel-track-{{ section.id }}"
+            class="theme-carousel-track"
+            role="group"
+            aria-roledescription="slides"
+            tabindex="0"
+          >
+            {% for block in section.blocks %}
+              <div
+                class="theme-carousel-item"
+                role="group"
+                aria-roledescription="slide"
+                aria-label="{{ forloop.index }} of {{ forloop.length }}"
+              >
+                {% render 'collection-card', collection: block.settings.collection, index: forloop.index %}
+              </div>
+            {% endfor %}
+          </div>
+          <div 
+            class="theme-carousel-controls">
+            <button type="button" data-prev aria-controls="theme-carousel-track-{{ section.id }}" aria-label="{{ 'accessibility.previous' | t }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button type="button" data-next aria-controls="theme-carousel-track-{{ section.id }}" aria-label="{{ 'accessibility.next' | t }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="theme-carousel-progress">
+            <div class="theme-carousel-progress-bar"></div>
+          </div>
+        </theme-carousel>
+      {% endif %}
     {% endif %}
   </div>
 </div>
@@ -102,6 +152,17 @@
       "default": 40,
       "step": 1,
       "visible_if": "{{ section.settings.display == 'all' }}"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Display style",
+      "options": [
+        { "value": "carousel", "label": "Carousel" },
+        { "value": "grid", "label": "Grid" }
+      ],
+      "default": "carousel",
+      "visible_if": "{{ section.settings.display == 'selected' }}"
     },
     {
       "type": "header",

@@ -3,31 +3,10 @@
 */
 .blog-page {}
 
-.blog-grid {
-  display: grid;
-  gap: 1.75rem 1rem;
-  grid-template-columns: repeat(var(--mobile-cols, 1), 1fr);
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
 .blog-item {}
 
 .blog-card {
   height: 100%;
-}
-
-@media (min-width: 600px) and (max-width: 1199px) {
-  .blog-grid {
-    grid-template-columns: repeat(var(--tablet-cols, 2), 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .blog-grid {
-    grid-template-columns: repeat(var(--desktop-cols, 3), 1fr);
-  }
 }
 
 /*

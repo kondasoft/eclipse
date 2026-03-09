@@ -27,7 +27,7 @@
     {% endif %}
     {% if section.settings.style == 'grid' %}
       <ul
-        class="product-grid"
+        class="theme-grid"
         style="
           --mobile-cols: {{ section.settings.mobile_cols }};
           --desktop-cols: {{ section.settings.desktop_cols }};
@@ -35,13 +35,13 @@
         data-style="{{ section.settings.style }}"
       >
         {% for product in section.settings.collection.products limit: section.settings.limit %}
-          <li class="collection-item">
+          <li class="theme-grid-item">
             {% render 'product-card', product: product %}
           </li>
         {% else %}
           {% for index in (1..8) %}
-            <li class="collection-item">
-              {% render 'product-card-placeholder', index: index %}
+            <li class="theme-grid-item">
+              {% render 'product-card', index: index %}
             </li>
           {% endfor %}
         {% endfor %}
@@ -82,7 +82,7 @@
                 aria-roledescription="slide"
                 aria-label="{{ forloop.index }} of {{ forloop.length }}"
               >
-                {% render 'product-card-placeholder', index: index %}
+                {% render 'product-card', index: index %}
               </div>
             {% endfor %}
           {% endfor %}
