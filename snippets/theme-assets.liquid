@@ -194,7 +194,8 @@
   applyInitialTheme();
 </script>
 
-<link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+<link rel="stylesheet" href="{{ 'base.css' | asset_url }}">
+<link rel="stylesheet" href="{{ 'components.css' | asset_url }}">
 <link rel="stylesheet" href="{{ 'sections.css' | asset_url }}">
 <link rel="stylesheet" href="{{ 'search.css' | asset_url }}">
 
@@ -242,6 +243,7 @@
   };
 </script>
 
-<script src="{{ 'theme.js' | asset_url }}" defer></script>
+<script src="{{ 'base.js' | asset_url }}" defer></script>
+<script src="{{ 'components.js' | asset_url }}" defer></script>
 <script src="{{ 'cart.js' | asset_url }}" defer></script>
 <script src="{{ 'search.js' | asset_url }}" defer></script>
