@@ -104,10 +104,13 @@
   "@type": "CollectionPage",
   "name": "{{ collection.title | escape }}",
   "description": "{{ collection.description | escape }}"
-  {%- if collection.image %},
-  "image": "{{ collection.image | image_url: width: 600 | escape }}"
+  {%- if collection.description == blank %},
+  "description": "{{ collection.title | escape }} collection"
   {%- endif %},
   "url": "{{ collection.url | escape }}"
+  {%- if collection.image %},
+  "image": "{{ collection.image | image_url: width: 600 | escape }}"
+  {%- endif %}
 }
 </script>
 
