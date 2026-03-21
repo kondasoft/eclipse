@@ -34,7 +34,7 @@ This free edition provides a strong core foundation for modern Shopify stores. P
 - Separator
 
 ## Demo
-https://ks-eclipse.myshopify.com (Password: ks)
+https://eclipse-demo.kondasoft.com (Password: ks)
 
 
 ## Support
